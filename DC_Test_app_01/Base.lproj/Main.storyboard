@@ -321,7 +321,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="248" id="ovF-em-ToU"/>
                                                 </constraints>
-                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="20" minimumInteritemSpacing="0.0" id="qm0-64-7Vu">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="qm0-64-7Vu">
                                                     <size key="itemSize" width="304" height="248"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
