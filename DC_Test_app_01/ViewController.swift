@@ -49,6 +49,17 @@ class ViewController: UIViewController {
             self.titleLabel.alpha = 1
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "HomeToSection" {
+            let toViewController = segue.destination as! SectionViewController
+            let indexPath = sender as! IndexPath
+            let section = sections[indexPath.row]
+            toViewController.section = section
+            toViewController.sections = sections
+            toViewController.indexPath = indexPath
+        }
+    }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -67,6 +78,10 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         cell.layer.transform = animateCell(cellFrame: cell.frame)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "HomeToSection", sender: indexPath)
     }
 }
 
