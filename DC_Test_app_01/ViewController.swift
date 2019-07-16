@@ -23,12 +23,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var chapterCollectionView: UICollectionView!
     
+    var isStatusBarHidden = false
+    
     @IBAction func playButtonTapped(_ sender: Any) {
         let urlString = "https://player.vimeo.com/external/235468301.hd.mp4?s=e852004d6a46ce569fcf6ef02a7d291ea581358e&profile_id=175"
-        
         let url = URL(string: urlString)
         let player = AVPlayer(url: url!)
-    
         let playerController = AVPlayerViewController()
         playerController.player = player
         present(playerController, animated: true) {
@@ -48,6 +48,30 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 1.5) {
             self.titleLabel.alpha = 1
         }
+        
+        addBlurStatusBar()
+        
+        setStatusBarBackgroundColor(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))
+    }
+    
+    func setStatusBarBackgroundColor(color: UIColor) {
+        guard let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else {
+            return
+        }
+        
+        statusBar.backgroundColor = color
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    func addBlurStatusBar() {
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let blur = UIBlurEffect(style: .dark)
+        let blurStatusBar = UIVisualEffectView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: statusBarHeight))
+        blurStatusBar.effect = blur
+        view.addSubview((blurStatusBar))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -58,7 +82,29 @@ class ViewController: UIViewController {
             toViewController.section = section
             toViewController.sections = sections
             toViewController.indexPath = indexPath
+            
+            isStatusBarHidden = true
+            UIView.animate(withDuration: 0.5, animations: { self.setNeedsStatusBarAppearanceUpdate()
+                }
+                
+            )
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        isStatusBarHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return isStatusBarHidden
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
     }
 }
 
